@@ -1,0 +1,19 @@
+==================================================
+        LIBRARY MANAGEMENT SYSTEM
+        BOOK SEARCH
+==================================================
+
+Enter book title: Java Programming
+
+Searching for book...
+
+Book Found!
+------------------------------------------
+Book ID     : 101
+Title       : Java Programming
+Author      : Herbert Schildt
+Category    : Programming
+Status      : Available
+------------------------------------------
+
+Search completed successfully.

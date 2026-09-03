@@ -1,0 +1,71 @@
+==================================================
+        IMPROPER INPUT VALIDATION TEST
+==================================================
+
+TEST CASE 1: Negative Book ID
+------------------------------------------
+
+Enter Book ID: -100
+
+Input accepted by application.
+
+Book ID received: -100
+
+RESULT:
+Invalid value was accepted.
+
+Security Issue:
+The application does not properly validate
+the range of the Book ID.
+
+Expected:
+Book ID should be a positive integer.
+
+
+==================================================
+TEST CASE 2: Empty Member Name
+==================================================
+
+Enter Member Name:
+
+Input accepted by application.
+
+RESULT:
+Empty member name was accepted.
+
+Security Issue:
+Required input was not validated.
+
+
+==================================================
+TEST CASE 3: Invalid Fine Value
+==================================================
+
+Enter Fine Amount: -500
+
+Input accepted by application.
+
+Fine Amount: Rs. -500
+
+RESULT:
+Negative fine value was accepted.
+
+Security Issue:
+Numeric range validation is missing.
+
+
+==================================================
+SUMMARY
+==================================================
+
+Improper Input Validation detected.
+
+The application accepts values that do not
+satisfy the expected input requirements.
+
+Recommended Fix:
+- Validate data type.
+- Validate minimum and maximum values.
+- Validate input length.
+- Reject empty input.
+- Validate input format.

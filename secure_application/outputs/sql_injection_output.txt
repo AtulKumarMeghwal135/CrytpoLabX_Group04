@@ -1,0 +1,42 @@
+==================================================
+        SQL INJECTION TEST
+==================================================
+
+Functionality: Book Search
+
+Enter book title:
+' OR '1'='1
+
+Constructed SQL Query:
+
+SELECT * FROM books
+WHERE title = '' OR '1'='1';
+
+--------------------------------------------------
+RESULT
+--------------------------------------------------
+
+The input has modified the SQL query structure.
+
+The query condition becomes:
+
+title = '' OR '1'='1'
+
+Since '1'='1' is always TRUE, the query may
+return records that were not specifically requested.
+
+--------------------------------------------------
+VULNERABILITY
+--------------------------------------------------
+
+SQL Injection detected.
+
+Cause:
+User input is directly concatenated into the SQL query.
+
+Impact:
+Unauthorized database information may be accessed
+or database operations may be manipulated.
+
+Recommended Fix:
+Use PreparedStatement / parameterized queries.

@@ -1,0 +1,29 @@
+==================================================
+        LIBRARY MANAGEMENT SYSTEM
+        BOOK ISSUE
+==================================================
+
+Enter Member ID: 1001
+Enter Book ID: 101
+
+Checking member details...
+Member found.
+
+Checking book availability...
+Book is available.
+
+Issuing book...
+
+Book issued successfully!
+
+------------------------------------------
+Member ID   : 1001
+Member Name : Rahul Sharma
+Book ID     : 101
+Book Title  : Java Programming
+Issue Date  : 24-08-2026
+Due Date    : 31-08-2026
+Status      : Issued
+------------------------------------------
+
+Book issue operation completed.

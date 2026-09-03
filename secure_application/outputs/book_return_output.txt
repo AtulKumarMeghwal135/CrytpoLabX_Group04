@@ -1,0 +1,26 @@
+==================================================
+        LIBRARY MANAGEMENT SYSTEM
+        BOOK RETURN
+==================================================
+
+Enter Member ID: 1001
+Enter Book ID: 101
+
+Checking issued book...
+
+Book found in member's issued records.
+
+Processing return...
+
+Book returned successfully!
+
+------------------------------------------
+Member ID   : 1001
+Book ID     : 101
+Book Title  : Java Programming
+Return Date : 31-08-2026
+Status      : Available
+Fine        : Rs. 0
+------------------------------------------
+
+Book return operation completed.

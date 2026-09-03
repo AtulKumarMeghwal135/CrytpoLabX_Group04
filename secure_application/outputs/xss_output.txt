@@ -1,0 +1,39 @@
+==================================================
+        CROSS-SITE SCRIPTING (XSS) TEST
+==================================================
+
+Functionality: Member Registration
+
+Enter Member Name:
+<script>alert('XSS')</script>
+
+Input accepted by application.
+
+Stored Member Name:
+<script>alert('XSS')</script>
+
+--------------------------------------------------
+SECURITY ANALYSIS
+--------------------------------------------------
+
+The application accepted untrusted HTML/JavaScript
+content without appropriate output encoding.
+
+If this value is displayed inside an HTML page,
+the browser may interpret the input as JavaScript.
+
+--------------------------------------------------
+VULNERABILITY
+--------------------------------------------------
+
+Cross-Site Scripting (XSS)
+
+Cause:
+User-controlled data is displayed without proper
+output encoding.
+
+Recommended Fix:
+1. Validate user input.
+2. Encode output before rendering.
+3. Prevent untrusted input from being interpreted
+   as HTML or JavaScript.

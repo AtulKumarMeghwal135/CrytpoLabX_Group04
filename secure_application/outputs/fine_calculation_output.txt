@@ -1,0 +1,28 @@
+==================================================
+        LIBRARY MANAGEMENT SYSTEM
+        FINE CALCULATION
+==================================================
+
+Member ID : 1001
+Book ID   : 101
+
+Due Date    : 31-08-2026
+Return Date : 05-09-2026
+
+Calculating fine...
+
+Days overdue : 5
+Fine per day : Rs. 5
+Total fine   : Rs. 25
+
+------------------------------------------
+FINE DETAILS
+------------------------------------------
+Member ID    : 1001
+Book ID      : 101
+Days Late    : 5
+Fine/Day     : Rs. 5
+Total Fine   : Rs. 25
+------------------------------------------
+
+Fine calculation completed successfully.

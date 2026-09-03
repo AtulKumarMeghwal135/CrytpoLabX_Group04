@@ -1,0 +1,22 @@
+==================================================
+        LIBRARY MANAGEMENT SYSTEM
+        MEMBER REGISTRATION
+==================================================
+
+Enter Member ID: 1001
+Enter Member Name: Rahul Sharma
+Enter Email: rahul@example.com
+Enter Phone Number: 9876543210
+
+Processing registration...
+
+Member registered successfully!
+
+------------------------------------------
+Member ID   : 1001
+Member Name : Rahul Sharma
+Email       : rahul@example.com
+Phone       : 9876543210
+------------------------------------------
+
+Registration completed successfully.
