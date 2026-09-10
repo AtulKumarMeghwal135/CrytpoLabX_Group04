@@ -1,0 +1,462 @@
+# Lab Assignment 3 Report – Library Management System
+
+## 1. Introduction
+
+The objective of Lab Assignment 3 is to develop a small application with the required core functionalities and intentionally introduce three security vulnerabilities. The application is developed inside the existing `CryptoLabX` GitHub repository.
+
+For this assignment, the assigned application is a **Library Management System**.
+
+The application demonstrates basic library operations such as book management, member registration, book issue and return, fine calculation, and book searching.
+
+Three vulnerabilities have been selected from the vulnerabilities suggested in the assignment:
+
+1. SQL Injection
+2. Cross-Site Scripting (XSS)
+3. Improper Input Validation
+
+The purpose of intentionally introducing these vulnerabilities is to identify and analyze them using a SAST tool and understand their potential impact and mitigation techniques.
+
+---
+
+## 2. Objectives
+
+The main objectives of this laboratory assignment are:
+
+* To develop a small Library Management System.
+* To implement the required core functionalities.
+* To understand common application security vulnerabilities.
+* To intentionally introduce selected vulnerabilities into the application.
+* To analyze the source code using a SAST tool.
+* To identify security issues reported by the SAST tool.
+* To understand the impact of each vulnerability.
+* To study appropriate mitigation techniques.
+* To document the development, testing, and security analysis.
+
+---
+
+## 3. Application Overview
+
+The Library Management System is a small application designed to simulate basic operations performed in a library.
+
+The system provides the following core functionalities:
+
+### 3.1 Book Search
+
+Users can search for books using information such as the book title or author.
+
+### 3.2 Book Issue
+
+A registered library member can issue an available book.
+
+### 3.3 Book Return
+
+An issued book can be returned to the library.
+
+### 3.4 Member Registration
+
+New library members can be registered in the system.
+
+### 3.5 Fine Calculation
+
+The system calculates the applicable fine when a book is returned after its due date.
+
+---
+
+## 4. Technology Stack
+
+| Component            | Technology                                          |
+| -------------------- | --------------------------------------------------- |
+| Programming Language | Java                                                |
+| Application Type     | Console-based                                       |
+| Database             | [SQLite/MySQL – update according to implementation] |
+| SAST Tool            | [SonarQube/Other – update according to tool used]   |
+| Version Control      | Git/GitHub                                          |
+| Repository           | CryptoLabX                                          |
+
+---
+
+## 5. Project Structure
+
+The application is organized according to the structure specified in the assignment.
+
+```text
+CryptoLabX/
+│
+├── classical/
+├── modern/
+├── hashing/
+├── attacks/
+├── analysis/
+├── docs/
+│
+└── secure_application/
+    │
+    ├── src/
+    ├── reports/
+    ├── screenshots/
+    ├── sast/
+    ├── outputs/
+    ├── testcases/
+    └── README.md
+```
+
+---
+
+## 6. Functionalities Implemented
+
+### 6.1 Member Registration
+
+The system accepts member information and creates a library member record.
+
+Typical information includes:
+
+* Member ID
+* Member name
+* Contact information
+
+### 6.2 Book Search
+
+Users can search for books available in the library.
+
+The search functionality accepts user-provided input and retrieves matching books from the database.
+
+### 6.3 Book Issue
+
+The system checks whether a book is available and assigns it to a registered member.
+
+The system records:
+
+* Member ID
+* Book ID
+* Issue date
+* Due date
+
+### 6.4 Book Return
+
+When a member returns a book, the system updates the book's availability status and calculates any applicable fine.
+
+### 6.5 Fine Calculation
+
+The system compares the due date with the return date.
+
+If the book is returned late, a fine is calculated according to the application's predefined fine rate.
+
+---
+
+# 7. Vulnerabilities
+
+Three vulnerabilities were intentionally introduced into the application.
+
+---
+
+## 7.1 SQL Injection
+
+### Description
+
+SQL Injection occurs when untrusted user input is directly incorporated into an SQL query without proper parameterization.
+
+For example, an insecure implementation may construct a query by concatenating user input:
+
+```java
+String query = "SELECT * FROM books WHERE title = '" + userInput + "'";
+```
+
+The value supplied by the user becomes part of the SQL statement.
+
+### Vulnerable Component
+
+The vulnerability is introduced in the book search/database operation.
+
+### Security Impact
+
+An attacker may be able to:
+
+* Retrieve unauthorized database information.
+* Modify database records.
+* Delete records.
+* Bypass intended database restrictions.
+
+### Detection
+
+The SAST tool can identify the flow of untrusted input into database queries and report the potentially unsafe SQL construction.
+
+### Recommended Mitigation
+
+Use parameterized queries or prepared statements.
+
+Example:
+
+```java
+PreparedStatement stmt =
+    connection.prepareStatement(
+        "SELECT * FROM books WHERE title = ?");
+stmt.setString(1, userInput);
+```
+
+Parameterized queries prevent user input from being interpreted as part of the SQL command.
+
+---
+
+## 7.2 Cross-Site Scripting (XSS)
+
+### Description
+
+Cross-Site Scripting occurs when untrusted user input is displayed without appropriate validation or output encoding.
+
+Although the application is primarily console-based, the vulnerability can be demonstrated if user-controlled library information is displayed through an HTML/web interface or HTML-formatted output.
+
+Example malicious input:
+
+```text
+<script>alert('XSS')</script>
+```
+
+If this input is inserted into an HTML page without proper encoding, the browser may interpret it as executable JavaScript.
+
+### Vulnerable Component
+
+The vulnerability can occur when user-controlled member or book information is displayed without appropriate output encoding.
+
+### Security Impact
+
+XSS may allow an attacker to:
+
+* Execute JavaScript in another user's browser.
+* Modify displayed content.
+* Steal sensitive browser information.
+* Perform actions on behalf of the victim.
+
+### Detection
+
+The SAST tool can detect potentially unsafe flows where user-controlled input reaches an HTML output location without proper sanitization or encoding.
+
+### Recommended Mitigation
+
+* Validate user input.
+* Encode output before displaying it.
+* Use safe templating mechanisms.
+* Do not directly insert untrusted input into HTML.
+
+---
+
+## 7.3 Improper Input Validation
+
+### Description
+
+Improper Input Validation occurs when the application accepts user input without properly checking its type, format, range, or expected values.
+
+Examples include:
+
+* Negative book IDs
+* Invalid member IDs
+* Invalid dates
+* Empty names
+* Unexpected characters
+* Invalid numeric values
+
+For example, an application may accept:
+
+```text
+Book ID: -100
+```
+
+when a valid book ID should only contain a positive integer.
+
+### Security Impact
+
+Improper input validation can cause:
+
+* Application errors.
+* Incorrect database records.
+* Unexpected application behavior.
+* Security vulnerabilities.
+* Potential denial-of-service conditions in poorly designed applications.
+
+### Detection
+
+The SAST tool can identify user input that reaches sensitive operations without sufficient validation.
+
+### Recommended Mitigation
+
+Input should be validated before processing.
+
+For example:
+
+```java
+if (bookId <= 0) {
+    System.out.println("Invalid Book ID");
+    return;
+}
+```
+
+Validation should include:
+
+* Type validation
+* Range validation
+* Length validation
+* Format validation
+* Null/empty checks
+
+---
+
+# 8. Test Cases
+
+The following test cases are used to verify the application's functionality and vulnerabilities.
+
+| Test Case | Input                         | Expected Result                     |
+| --------- | ----------------------------- | ----------------------------------- |
+| TC01      | Valid member details          | Member registered successfully      |
+| TC02      | Empty member name             | Input rejected                      |
+| TC03      | Valid book ID                 | Book information displayed          |
+| TC04      | Invalid book ID               | Error message displayed             |
+| TC05      | Available book + valid member | Book issued successfully            |
+| TC06      | Already issued book           | Issue operation rejected            |
+| TC07      | Valid return                  | Book returned successfully          |
+| TC08      | Late return                   | Fine calculated                     |
+| TC09      | SQL injection test input      | Vulnerability demonstrated/detected |
+| TC10      | XSS test input                | Malicious input detected/handled    |
+| TC11      | Negative numeric value        | Input rejected                      |
+| TC12      | Invalid date                  | Input rejected                      |
+
+---
+
+# 9. SAST Analysis
+
+Static Application Security Testing (SAST) is performed on the application's source code.
+
+The purpose of SAST is to identify security weaknesses without requiring the application to be executed.
+
+The analysis focuses on:
+
+* SQL Injection
+* Cross-Site Scripting
+* Improper Input Validation
+* Unsafe data flow
+* Potential security-sensitive coding practices
+
+The SAST results are stored inside:
+
+```text
+secure_application/sast/
+```
+
+Screenshots of the SAST tool are stored inside:
+
+```text
+secure_application/screenshots/
+```
+
+---
+
+# 10. Vulnerability Analysis Summary
+
+| Vulnerability             | Location                      | Impact                                       | Recommended Fix                      |
+| ------------------------- | ----------------------------- | -------------------------------------------- | ------------------------------------ |
+| SQL Injection             | Database/Search functionality | Unauthorized database access or modification | Prepared statements                  |
+| XSS                       | User-controlled output        | Script execution in browser                  | Output encoding and input validation |
+| Improper Input Validation | User input handling           | Unexpected behavior and invalid data         | Strong input validation              |
+
+---
+
+# 11. Screenshots
+
+Screenshots should be added to:
+
+```text
+secure_application/screenshots/
+```
+
+Recommended screenshots include:
+
+1. Main application menu
+2. Member registration
+3. Book search
+4. Book issue
+5. Book return
+6. Fine calculation
+7. SQL Injection vulnerability/SAST result
+8. XSS vulnerability/SAST result
+9. Improper Input Validation/SAST result
+10. Final SAST analysis dashboard
+
+Example:
+
+```text
+screenshots/
+├── application_menu.png
+├── member_registration.png
+├── book_search.png
+├── book_issue.png
+├── book_return.png
+├── fine_calculation.png
+├── sql_injection.png
+├── xss.png
+├── input_validation.png
+└── sast_dashboard.png
+```
+
+---
+
+# 12. Remediation
+
+The vulnerabilities introduced in the intentionally vulnerable version can be addressed using secure coding practices.
+
+### SQL Injection
+
+Use prepared statements instead of constructing SQL queries through string concatenation.
+
+### XSS
+
+Validate input and encode output before displaying user-controlled information.
+
+### Improper Input Validation
+
+Validate every input according to its expected type, range, length, and format.
+
+---
+
+# 13. Security Comparison
+
+| Aspect         | Vulnerable Implementation          | Secure Implementation |
+| -------------- | ---------------------------------- | --------------------- |
+| SQL Queries    | String concatenation               | Prepared statements   |
+| User Input     | Accepted without sufficient checks | Validated             |
+| Output         | Untrusted data displayed directly  | Properly encoded      |
+| Numeric Values | Insufficient range checks          | Range validation      |
+| Dates          | Insufficient format checking       | Date validation       |
+
+---
+
+# 14. Conclusion
+
+The Library Management System successfully demonstrates the core functionality required for Lab Assignment 3.
+
+Three vulnerabilities were intentionally incorporated into the application: SQL Injection, Cross-Site Scripting, and Improper Input Validation.
+
+SAST analysis is used to identify security weaknesses in the source code. The project demonstrates how insecure coding practices can introduce vulnerabilities and how secure programming techniques can be used to mitigate them.
+
+The assignment provides practical understanding of secure software development, vulnerability identification, static analysis, testing, and remediation.
+
+---
+
+## 15. References
+
+* OWASP – SQL Injection
+* OWASP – Cross-Site Scripting
+* OWASP – Input Validation
+* SAST tool documentation
+* Java documentation
+
+---
+
+## 16. Team Contribution
+
+| Member   | Contribution                 |
+| -------- | ---------------------------- |
+| Member 1 | Application development      |
+| Member 2 | Database and functionality   |
+| Member 3 | Vulnerability implementation |
+| Member 4 | SAST analysis and testing    |
+
+*Update the team members and contributions according to the actual work performed by each group member.*
+
