@@ -1,0 +1,1 @@
+Padding oracle attacks exploit the difference between valid and invalid PKCS7 padding. AES itself remains secure, but a vulnerable CBC implementation can leak plaintext through its padding validation response.
